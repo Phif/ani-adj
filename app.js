@@ -1,6 +1,6 @@
 let searching = false;
-let adjectives;
-let randomAdjective;
+// let adjectives;
+// let randomAdjective;
 
 let spinner = document.querySelector("#spinner")
 let button = document.querySelector("#button")
@@ -9,24 +9,23 @@ let image = document.querySelector("#image")
 let title = document.querySelector("#title")
 let text = document.querySelector("#text")
 
-button.onclick = () => {
+button.onclick = async () => {
     if (searching) {
         return
     } else {
-        spinner.style.display = "inline";
-        card.style.visibility = "hidden";
-        searching = true;
-        processAdjectives();
+        beginSearch();
+        // const adjective = await getRandomAdjective()
+        fetchRandomAnime();
     }
 }
 
-function processAdjectives() {
+async function getRandomAdjective() {
     fetch("adjectives.js")
     .then(response => response.json())
     .then(adjectives => {
-        randomAdjective = getRandomElement(adjectives)
+        const randomAdjective = getRandomElement(adjectives)
         console.log(randomAdjective)
-        fetchRandomMatchingAnime(randomAdjective);
+        return randomAdjective
     })
     .catch(error => console.error('Error fetching adjectives:', error));
 }
@@ -37,117 +36,6 @@ function getRandomElement(arr) {
     return arr[randomIndex];
 }
 
-async function fetchRandomMatchingAnime(randomWord) {
-    const url = 'https://graphql.anilist.co';
-    const query = `
-    query ($search: String) {
-        Page {
-            media(search: $search, type: ANIME) {
-                title {
-                    english
-                }
-            }
-        }
-    }`;
-    const variables = {
-        search: randomWord
-    };
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            query: query,
-            variables: variables
-        })
-    };
-    
-    fetch(url, options)
-    .then(handleResponse)
-    .then(handleData)
-    .catch((error) => console.error('Error fetching data: ', error));
-    
-    function handleResponse(response) {
-        return response.json().then(function (json) {
-            return response.ok ? json : Promise.reject(json);
-        });
-    }
-    
-    function handleData(data) {
-        let map = data.data.Page.media.map(entry => entry.title.english).filter(item => item !== null)
-        console.log(map)
-        const regex = new RegExp("\\b"+randomAdjective+"\\b", 'i'); 
-        map = map.filter(entry => entry.match(regex))
-        let randomAnime = getRandomElement(map); 
-        console.log(randomAnime)
-        if (randomAnime) {
-            fetchAnimeInfo(randomAnime)
-        } else {
-            setTimeout(() => {
-                processAdjectives()
-            }, 2000);
-        }
-    }
-} 
-
-function fetchAnimeInfo(englishName) {
-    const query = `
-    query ($search: String) {
-        Media (search: $search, type: ANIME) {
-            id
-            title {
-                romaji
-                english
-                native
-            }
-            description
-            episodes
-            genres
-            bannerImage
-        }
-    }
-    `;
-    
-    const variables = {
-        search: englishName
-    };
-    
-    const url = 'https://graphql.anilist.co';
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            query: query,
-            variables: variables
-        })
-    };
-    
-    fetch(url, options)
-    .then(handleResponse)
-    .then(handleData)
-    .catch(handleError);
-}
-
-function handleResponse(response) {
-    return response.json().then(function (json) {
-        return response.ok ? json : Promise.reject(json);
-    });
-}
-
-function handleData(data) {
-    console.log(data);
-    populateCard(data.data.Media);
-    return data
-}
-
-function handleError(error) {
-    console.error(error);
-}
 
 function populateCard(anime) {
     card.style.visibility = "visible";
@@ -156,4 +44,45 @@ function populateCard(anime) {
     text.innerHTML = anime.description;
     searching = false;
     spinner.style.display = "none";
+}
+
+async function fetchRandomAnime() {
+    // fetch(`https://api.jikan.moe/v4/anime/${animeId}`)
+    fetch(`https://api.jikan.moe/v4/random/anime`)
+    .then(data => data.json())
+    .then(data => {
+        console.log(data)
+        fetchAnimeThemes(data.data.mal_id)
+    })
+}
+
+async function fetchAnimeThemes(animeId) {
+    fetch(`https://api.jikan.moe/v4/anime/${animeId}/themes`)
+    .then(data => data.json())
+    .then(data => {
+        const songs = data.data.openings.concat(data.data.endings)
+        console.log(songs)
+        if (songs.length > 0) {
+            for (const song of songs) {
+                console.log(song)
+            }
+            endSearch();
+        } else {
+            setTimeout(() => {
+                fetchRandomAnime();
+            }, 1000)
+        }
+    })
+}
+
+function beginSearch() {
+    spinner.style.display = "inline";
+    card.style.visibility = "hidden";
+    searching = true;
+}
+
+function endSearch() {
+    spinner.style.display = "none";
+    card.style.visibility = "visible";
+    searching = false;
 }
