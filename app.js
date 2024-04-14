@@ -13,9 +13,10 @@ button.onclick = async () => {
     if (searching) {
         return
     } else {
-        beginSearch();
+        endSearch()
+        fetchYouTubeVideoID("harumodoki")
         // const adjective = await getRandomAdjective()
-        fetchRandomAnime();
+        // fetchRandomAnime();
     }
 }
 
@@ -86,3 +87,36 @@ function endSearch() {
     card.style.visibility = "visible";
     searching = false;
 }
+
+async function fetchYouTubeVideoID(songName) {
+    const apiKey = 'AIzaSyCLU6hKz5VRX38pVRAc_lcyM2feX7K3vUA';
+    const maxResults = 1;
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(songName)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const videoId = data.items[0].id.videoId;
+        console.log(videoId);
+        embedYouTubeVideo(videoId)
+        return videoId;
+    } catch (error) {
+        console.error('Failed to fetch video ID:', error);
+    }
+}
+
+function embedYouTubeVideo(videoId) {
+    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', embedUrl);
+    iframe.setAttribute('width', '560');
+    iframe.setAttribute('height', '315');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+    iframe.allowFullscreen = true;
+
+    const container = document.getElementById('videoContainer'); // Ensure you have a div with id="videoContainer"
+    container.innerHTML = ''; // Clear previous contents
+    container.appendChild(iframe);
+}
+
