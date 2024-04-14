@@ -89,7 +89,7 @@ function endSearch() {
 }
 
 async function fetchYouTubeVideoID(songName) {
-    const apiKey = 'AIzaSyCLU6hKz5VRX38pVRAc_lcyM2feX7K3vUA';
+    const apiKey = '';
     const maxResults = 1;
     const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(songName)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
 
