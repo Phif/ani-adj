@@ -6,6 +6,10 @@ body {
     background-color: antiquewhite;
 }
 
+.accordion {
+  max-width: 100%;
+}
+
 #video {
   width: 100%;
   height: auto;

@@ -1,12 +1,11 @@
 import adjectives from './adjectives2.js';
 
 let searching = false;
-let animeCard = {};
 
 let spinner = document.querySelector("#spinner")
 let button = document.querySelector("#button")
 let card = document.querySelector("#card")
-let image = document.querySelector("#image")
+// let image = document.querySelector("#image")
 let songTitle = document.querySelector("#song-title")
 let songArtist = document.querySelector("#song-artist")
 let animeName = document.querySelector("#anime-name")
@@ -37,9 +36,9 @@ function populateCard(animeCard) {
 }
 
 function beginSearch() {
+    // image.src = "";
     spinner.style.display = "inline";
     card.style.display = "none";
-    // image.src = "";
     video.src = "";
     searching = true;
 }
