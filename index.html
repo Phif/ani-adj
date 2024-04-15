@@ -9,20 +9,24 @@
     <script src="app.js" type="module" defer></script>
     <link href="style.css" rel="stylesheet">
 </head>
-<body class="mx-auto m-5 p-1" style="max-width: 900px; display: flex; flex-flow: column nowrap; justify-content: center; align-items: center; gap: 2rem;">
+<body class="mx-auto m-3 p-1" style="max-width: 900px; display: flex; flex-flow: column nowrap; justify-content: center; align-items: center; gap: 2rem;">
     <h1>What anime music describes you?</h1>
     <button id="button" class="btn btn-primary">Find an anime!</button>
-    <img id="spinner" src="https://media1.tenor.com/m/66bWb1AeSfAAAAAd/seal_waitin-seal.gif" style="display: none;" />
-    <!-- <div id="spinner" class="spinner-border text-secondary" role="status" style="display: none;"> -->
+    <div id="spinner" class="spinner-border text-secondary" role="status" style="display: none;">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <div id="card" class="card" style="visibility: hidden; max-width: 600px;">
-      <img id="image" src="" class="img-fluid card-img-top" alt="">
+    <div id="card" class="card" style="max-width: 100%;">
+      <!-- <img id="image" src="" class="img-fluid card-img-top" alt=""> -->
+      <div id="anime-name" class="card-header">
+        Featured
+      </div>
       <div class="card-body">
-        <h5 id="title" class="card-title"></h5>
-        <p id="text" class="card-text"></p>
-        <p class="card-text"><small id="music" class="text-body-secondary"></small></p>
-        <div id="videoContainer"></div>
+        <h2 id="song-title" class="card-title">Card title</h2>
+        <h4 id="song-artist" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h4>
+        <small id="synopsis" class="card-text">A little description of the anime in question</small>
+        <br />
+        <br />
+        <div id="video-container" style="border-radius: 10px; overflow: hidden;"></div>
       </div>
     </div>
 </body>

@@ -1,3 +1,4 @@
+const adjectives =
 [
     "abandoned",
     "able",
@@ -1345,3 +1346,5 @@
     "zesty",
     "zigzag"
 ]
+
+export default adjectives;

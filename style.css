@@ -6,20 +6,9 @@ body {
     background-color: antiquewhite;
 }
 
-#spinner {
-    object-fit: cover;
-    object-position: right center;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    animation: rotateImage 5s linear infinite; 
+#video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
 }
-
-@keyframes rotateImage {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
