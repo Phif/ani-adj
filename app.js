@@ -11,7 +11,6 @@ let songTitle = document.querySelector("#song-title")
 let songArtist = document.querySelector("#song-artist")
 let animeName = document.querySelector("#anime-name")
 let synopsis = document.querySelector("#synopsis")
-let videoContainer = document.querySelector("#video-container")
 let video = document.querySelector("#video")
 
 button.onclick = async () => {
@@ -30,16 +29,16 @@ function getRandomElement(arr) {
 
 function populateCard(animeCard) {
     // image.src = "";
-    animeName.innerHTML = `<strong>${animeCard.animeName}</strong> - ${animeCard.songType}`;
+    animeName.innerHTML = `<strong>${animeCard.animeName}</strong> (${animeCard.year}) - ${animeCard.songType}`;
     synopsis.innerHTML = animeCard.synopsis;
     songTitle.innerHTML = animeCard.songTitle
-    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "<em>No artist found ಥ_ಥ</em>"
+    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "No artist found ┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻"
     embedVideo(animeCard.videoUrl)
 }
 
 function beginSearch() {
     spinner.style.display = "inline";
-    card.style.visibility = "hidden";
+    card.style.display = "none";
     // image.src = "";
     video.src = "";
     searching = true;
@@ -47,7 +46,7 @@ function beginSearch() {
 
 function endSearch() {
     spinner.style.display = "none";
-    card.style.visibility = "visible";
+    card.style.display = "inline";
     searching = false;
 }
 
@@ -75,7 +74,7 @@ async function getRandomSong() {
         populateCard(animeCard);
         endSearch();
     } catch (error) {
-        console.error(error);
+        console.log("No song title found with this word.");
         setTimeout(getRandomSong, 1000); // Retry after 1 second
     }
 }

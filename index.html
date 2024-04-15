@@ -15,7 +15,7 @@
     <div id="spinner" class="spinner-border text-secondary" role="status" style="display: none;">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <div id="card" class="card" style="max-width: 100%;">
+    <div id="card" class="card" style="display: none; max-width: 100%;">
       <!-- <img id="image" src="" class="img-fluid card-img-top" alt=""> -->
       <div id="anime-name" class="card-header">
         Featured
@@ -23,9 +23,21 @@
       <div class="card-body">
         <h2 id="song-title" class="card-title">Card title</h2>
         <h4 id="song-artist" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h4>
-        <small id="synopsis" class="card-text">A little description of the anime in question</small>
+        <div class="accordion" id="accordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Synopsis
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
+              <div id="synopsis" class="accordion-body"></div>
+            </div>
+          </div>
+        </div>
+
         <br />
-        <br />
+
         <div id="video-container">
           <video id="video"></video>
         </div>
