@@ -31,7 +31,7 @@ function populateCard(animeCard) {
     animeName.innerHTML = `<strong>${animeCard.animeName}</strong> (${animeCard.year}) - ${animeCard.songType}`;
     synopsis.innerHTML = animeCard.synopsis;
     songTitle.innerHTML = animeCard.songTitle
-    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "No artist found ┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻"
+    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "no artist found ＞︿＜"
     embedVideo(animeCard.videoUrl)
 }
 
