@@ -12,6 +12,7 @@ let songArtist = document.querySelector("#song-artist")
 let animeName = document.querySelector("#anime-name")
 let synopsis = document.querySelector("#synopsis")
 let videoContainer = document.querySelector("#video-container")
+let video = document.querySelector("#video")
 
 button.onclick = async () => {
     if (searching) {
@@ -29,10 +30,10 @@ function getRandomElement(arr) {
 
 function populateCard(animeCard) {
     // image.src = "";
-    animeName.innerHTML = `From the anime <strong><em>${animeCard.animeName}</em></strong>`;
+    animeName.innerHTML = `<strong>${animeCard.animeName}</strong> - ${animeCard.songType}`;
     synopsis.innerHTML = animeCard.synopsis;
     songTitle.innerHTML = animeCard.songTitle
-    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "<em>No artist found</em>"
+    songArtist.innerHTML = animeCard.songArtist ? `by ${animeCard.songArtist.join(", ")}` : "<em>No artist found ಥ_ಥ</em>"
     embedVideo(animeCard.videoUrl)
 }
 
@@ -40,6 +41,7 @@ function beginSearch() {
     spinner.style.display = "inline";
     card.style.visibility = "hidden";
     // image.src = "";
+    video.src = "";
     searching = true;
 }
 
@@ -59,12 +61,14 @@ async function getRandomSong() {
         const anime = data.anime[0];
         const themes = anime.animethemes.filter(theme => theme.song.title.toLowerCase().includes(word.toLowerCase()));
         const theme = getRandomElement(themes);
+        console.log(anime)
         const animeCard = {
             animeName: anime.name,
             synopsis: anime.synopsis,
             year: anime.year,
             songTitle: theme.song.title,
             songArtist: theme.song.artists.length > 0 ? theme.song.artists.map(artist => artist.name) : undefined,
+            songType: theme.slug,
             videoUrl: theme.animethemeentries[0].videos[0].link
         };
         console.log(animeCard);
@@ -78,12 +82,7 @@ async function getRandomSong() {
 
 function embedVideo(url) {
     const videoUrl = url;
-    
-    const video = document.createElement('video');
-    video.id = "video";
     video.src = videoUrl;
     video.controls = true;
     video.autoplay = false;
-    
-    videoContainer.appendChild(video);
 }
