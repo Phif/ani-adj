@@ -1,4 +1,4 @@
-import adjectives from './adjectives.js';
+import adjectives from './adjectives2.js';
 
 let searching = false;
 let animeCard = {};
